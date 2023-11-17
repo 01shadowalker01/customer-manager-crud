@@ -117,6 +117,9 @@ export class CustomerServiceImpl implements CustomerService {
     const items = JSON.parse(stringifiedData);
     if (!Array.isArray(items)) throw new Error('Saved customers are invalid.');
 
-    return items.map((item) => new Customer(item));
+    return items.map(
+      (item) =>
+        new Customer({ ...item, dateOfBirth: new Date(item.dateOfBirth) })
+    );
   }
 }
