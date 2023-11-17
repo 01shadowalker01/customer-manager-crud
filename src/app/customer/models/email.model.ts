@@ -18,6 +18,10 @@ export class Email implements ValueObject<string> {
   validate(value: string): boolean {
     return true;
   }
+
+  toString(): string {
+    return this.value;
+  }
 }
 
 export function EmailValidator(): ValidatorFn {

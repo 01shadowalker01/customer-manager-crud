@@ -56,8 +56,21 @@ export class Customer {
     this._bankAccountNumber = customer.bankAccountNumber;
   }
 
+  toJSON() {
+    const customer: iCustomer & { id: string } = {
+      id: this.id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      dateOfBirth: this.dateOfBirth,
+      phoneNumber: this.phoneNumber.toString(),
+      email: this.email.toString(),
+      bankAccountNumber: this.bankAccountNumber,
+    };
+    return customer;
+  }
+
   private generateId(customer: iCustomer): string {
-    return customer.firstName + customer.lastName + customer.dateOfBirth;
+    return customer.firstName + customer.lastName;
   }
 }
 
