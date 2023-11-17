@@ -58,9 +58,9 @@ export class CustomerServiceImpl implements CustomerService {
   }
 
   update(updatedCustomer: Customer): Response<string> {
-    let cusIndex: number = -1;
+    let customerIndex: number = -1;
     const customer = this.customers.find((customer, i) => {
-      cusIndex = i;
+      customerIndex = i;
       return customer.id == updatedCustomer.id;
     });
     if (!customer)
@@ -69,7 +69,7 @@ export class CustomerServiceImpl implements CustomerService {
         data: '',
       };
 
-    this.customers[cusIndex] = updatedCustomer;
+    this.customers[customerIndex] = updatedCustomer;
     this.saveCustomers();
     return {
       statusCode: ResponseCode.SUCCESS,
@@ -78,7 +78,23 @@ export class CustomerServiceImpl implements CustomerService {
   }
 
   delete(id: string): Response<string> {
-    throw new Error('Method not implemented.');
+    let customerIndex: number = -1;
+    const customer = this.customers.find((customer, i) => {
+      customerIndex = i;
+      return customer.id == id;
+    });
+    if (!customer)
+      return {
+        statusCode: ResponseCode.BAD_REQUEST,
+        data: '',
+      };
+
+    this.customers.splice(customerIndex, 1);
+    this.saveCustomers();
+    return {
+      statusCode: ResponseCode.SUCCESS,
+      data: id,
+    };
   }
 
   private saveCustomers() {

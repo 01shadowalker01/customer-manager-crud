@@ -110,6 +110,28 @@ describe('#CustomerService', () => {
       expect(updateResponse.statusCode).toEqual(ResponseCode.BAD_REQUEST);
     });
   });
+
+  describe('#delete', () => {
+    it('given there is a customer in database, deletes the customer from the database', () => {
+      const customer = createCustomer();
+      service.insert(customer);
+
+      const updateResponse = service.delete(customer.id);
+      const fetchResponse = service.fetchById(updateResponse.data);
+
+      expect(updateResponse.statusCode).toEqual(ResponseCode.SUCCESS);
+      expect(fetchResponse.statusCode).toEqual(ResponseCode.NOT_FOUND);
+    });
+
+    it(`given the customer is not in database, deletes the customer,
+        and receives an error`, () => {
+      const customer = createCustomer();
+
+      const updateResponse = service.delete(customer.id);
+
+      expect(updateResponse.statusCode).toEqual(ResponseCode.BAD_REQUEST);
+    });
+  });
 });
 
 @Injectable()
