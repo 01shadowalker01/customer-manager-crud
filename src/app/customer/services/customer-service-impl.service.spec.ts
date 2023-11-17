@@ -6,9 +6,8 @@ import { CustomerService } from '../interfaces/customer.service';
 import { CustomerServiceImpl } from './customer-service-impl.service';
 import { LocalStorageService } from './local-storage.service';
 import { ResponseCode } from 'src/app/models/response-code.enum';
-import { Email } from '../models/email.model';
 
-function createCustomer(customer?: iCustomer): Customer {
+function createCustomer(customer?: Partial<iCustomer>): Customer {
   const newCustomer: iCustomer = {
     firstName: 'Jim',
     lastName: 'Halpert',
@@ -48,10 +47,28 @@ describe('#CustomerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('#fetchAll customer list at the beginning is empty', () => {
-    let customerList = service.fetchAll().data;
+  describe('#fetchAll', () => {
+    it('customer list at the beginning is empty', () => {
+      let customerList = service.fetchAll().data;
 
-    expect(customerList.length).toEqual(0);
+      expect(customerList.length).toEqual(0);
+    });
+
+    it(`given there are two customers in database, fetches the all`, () => {
+      const customer = createCustomer();
+      const customer2 = createCustomer({
+        firstName: 'Michael',
+        lastName: 'Scott',
+      });
+      service.insert(customer);
+      service.insert(customer2);
+      const ids = [customer.id, customer2.id];
+
+      const customerList = service.fetchAll().data;
+
+      expect(customerList.length).toEqual(2);
+      expect(customerList.map((c) => c.id)).toEqual(ids);
+    });
   });
 
   describe('#insert', () => {
