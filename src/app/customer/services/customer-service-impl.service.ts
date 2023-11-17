@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { CustomerService } from 'src/app/customer/interfaces/customer.service';
 import { Customer } from '../models/customer.model';
 import { LocalStorageService } from './local-storage.service';
+import { Response } from '../../models/response.model';
+import { ResponseCode } from 'src/app/models/response-code.enum';
 
 const LOCAL_STORAGE_KEY = '$CUSTOMERS$';
 
@@ -12,30 +14,49 @@ export class CustomerServiceImpl implements CustomerService {
 
   constructor(private localStorageService: LocalStorageService) {}
 
-  insert(customer: Customer): string {
+  insert(customer: Customer): Response<string> {
+    if (this.isCustomerDuplicate(customer.id))
+      return {
+        statusCode: ResponseCode.BAD_REQUEST,
+        data: '',
+      };
+
     this.customers.push(customer);
     this.saveCustomers();
-    return customer.id;
+    return {
+      statusCode: ResponseCode.SUCCESS,
+      data: customer.id,
+    };
   }
 
-  fetchById(id: string): Customer | undefined {
-    let customers: Customer[] = this.fetchAll();
-
-    return customers.find((customer) => customer.id == id);
+  private isCustomerDuplicate(id: string): boolean {
+    const resp = this.fetchById(id);
+    return resp.statusCode === ResponseCode.SUCCESS ? true : false;
   }
 
-  fetchAll(): Customer[] {
-    if (!this.outdated) return this.customers;
+  fetchById(id: string): Response<Customer | null> {
+    if (!id) throw new Error('Invalid Id');
+    let customers: Customer[] = this.fetchAll().data;
+
+    const customer = customers.find((customer) => customer.id == id);
+    if (!customer) return { statusCode: ResponseCode.NOT_FOUND, data: null };
+
+    return { statusCode: ResponseCode.SUCCESS, data: customer };
+  }
+
+  fetchAll(): Response<Customer[]> {
+    if (!this.outdated)
+      return { statusCode: ResponseCode.SUCCESS, data: this.customers };
 
     this.customers = this.getCustomers();
-    return [...this.customers];
+    return { statusCode: ResponseCode.SUCCESS, data: [...this.customers] };
   }
 
-  update(customer: Customer): string {
+  update(customer: Customer): Response<string> {
     throw new Error('Method not implemented.');
   }
 
-  delete(id: string): string {
+  delete(id: string): Response<string> {
     throw new Error('Method not implemented.');
   }
 
