@@ -6,6 +6,7 @@ import { CustomerService } from '../interfaces/customer.service';
 import { CustomerServiceImpl } from './customer-service-impl.service';
 import { LocalStorageService } from './local-storage.service';
 import { ResponseCode } from 'src/app/models/response-code.enum';
+import { Email } from '../models/email.model';
 
 function createCustomer(customer?: iCustomer): Customer {
   const newCustomer: iCustomer = {
@@ -39,6 +40,8 @@ describe('#CustomerService', () => {
     });
     service = TestBed.inject(CustomerService);
     localStorageService = TestBed.inject(LocalStorageService);
+
+    localStorageService.resetStorage();
   });
 
   it('should be created', () => {
@@ -52,10 +55,6 @@ describe('#CustomerService', () => {
   });
 
   describe('#insert', () => {
-    beforeEach(() => {
-      localStorageService.resetStorage();
-    });
-
     it('given a customer, inserts it to database', () => {
       const customer = createCustomer();
 
@@ -73,8 +72,42 @@ describe('#CustomerService', () => {
       service.insert(customer);
 
       const response = service.insert(customer2);
+      const customerList = service.fetchAll().data;
 
       expect(response.statusCode).toEqual(ResponseCode.BAD_REQUEST);
+      expect(customerList.length).toEqual(1);
+    });
+  });
+
+  describe('#update', () => {
+    it('given there is a customer in database, updates the customer in the database', () => {
+      const customer = createCustomer();
+      service.insert(customer);
+      const newEmail = 'test@gmail.com';
+      const updatedCustomer: Customer = new Customer({
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        dateOfBirth: customer.dateOfBirth,
+        bankAccountNumber: customer.bankAccountNumber,
+        phoneNumber: customer.phoneNumber.value,
+        email: newEmail,
+      });
+
+      const updateResponse = service.update(updatedCustomer);
+      const fetchResponse = service.fetchById(updateResponse.data);
+
+      expect(updateResponse.statusCode).toEqual(ResponseCode.SUCCESS);
+      expect(fetchResponse.data).not.toEqual(null);
+      expect(fetchResponse.data?.email.value).toEqual(newEmail);
+    });
+
+    it(`given the customer is not in database, updates the customer,
+        and receives an error`, () => {
+      const customer = createCustomer();
+
+      const updateResponse = service.update(customer);
+
+      expect(updateResponse.statusCode).toEqual(ResponseCode.BAD_REQUEST);
     });
   });
 });

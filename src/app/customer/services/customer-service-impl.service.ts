@@ -35,7 +35,12 @@ export class CustomerServiceImpl implements CustomerService {
   }
 
   fetchById(id: string): Response<Customer | null> {
-    if (!id) throw new Error('Invalid Id');
+    if (!id)
+      return {
+        statusCode: ResponseCode.BAD_REQUEST,
+        data: null,
+      };
+
     let customers: Customer[] = this.fetchAll().data;
 
     const customer = customers.find((customer) => customer.id == id);
@@ -52,8 +57,24 @@ export class CustomerServiceImpl implements CustomerService {
     return { statusCode: ResponseCode.SUCCESS, data: [...this.customers] };
   }
 
-  update(customer: Customer): Response<string> {
-    throw new Error('Method not implemented.');
+  update(updatedCustomer: Customer): Response<string> {
+    let cusIndex: number = -1;
+    const customer = this.customers.find((customer, i) => {
+      cusIndex = i;
+      return customer.id == updatedCustomer.id;
+    });
+    if (!customer)
+      return {
+        statusCode: ResponseCode.BAD_REQUEST,
+        data: '',
+      };
+
+    this.customers[cusIndex] = updatedCustomer;
+    this.saveCustomers();
+    return {
+      statusCode: ResponseCode.SUCCESS,
+      data: updatedCustomer.id,
+    };
   }
 
   delete(id: string): Response<string> {
