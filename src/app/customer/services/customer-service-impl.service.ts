@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CustomerService } from 'src/app/customer/interfaces/customer.service';
 import { Customer } from '../models/customer.model';
+import { LocalStorageService } from './local-storage.service';
 
 const LOCAL_STORAGE_KEY = '$CUSTOMERS$';
 
@@ -9,7 +10,7 @@ export class CustomerServiceImpl implements CustomerService {
   private customers: Customer[] = [];
   private outdated: boolean = false;
 
-  constructor() {}
+  constructor(private localStorageService: LocalStorageService) {}
 
   insert(customer: Customer): string {
     this.customers.push(customer);
@@ -33,18 +34,19 @@ export class CustomerServiceImpl implements CustomerService {
   update(customer: Customer): string {
     throw new Error('Method not implemented.');
   }
+
   delete(id: string): string {
     throw new Error('Method not implemented.');
   }
 
   private saveCustomers() {
     const stringifiedData = JSON.stringify(this.customers);
-    localStorage.setItem(LOCAL_STORAGE_KEY, stringifiedData);
+    this.localStorageService.setItem(LOCAL_STORAGE_KEY, stringifiedData);
     this.outdated = true;
   }
 
   private getCustomers(): Customer[] {
-    const stringifiedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const stringifiedData = this.localStorageService.getItem(LOCAL_STORAGE_KEY);
     if (!stringifiedData) return [];
 
     return this.parseCustomers(stringifiedData);
