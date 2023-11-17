@@ -12,7 +12,9 @@ export class CustomerServiceImpl implements CustomerService {
   private customers: Customer[] = [];
   private outdated: boolean = false;
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(private localStorageService: LocalStorageService) {
+    this.customers = this.getCustomers();
+  }
 
   insert(customer: Customer): Response<string> {
     if (this.isCustomerDuplicate(customer.id))
