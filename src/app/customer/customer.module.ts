@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerServiceImpl } from './services/customer-service-impl.service';
-import { CustomerService } from '../api/customer.service';
+import { CustomerService } from './interfaces/customer.service';
 
 @NgModule({
   declarations: [CustomerComponent],

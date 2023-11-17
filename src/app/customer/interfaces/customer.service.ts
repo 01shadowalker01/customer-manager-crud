@@ -1,4 +1,4 @@
-import { Customer } from '../customer/models/customer.model';
+import { Customer } from '../models/customer.model';
 
 export abstract class CustomerService {
   abstract insert(customer: Customer): string;
