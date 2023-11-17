@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomerComponent } from './components/customer/customer.component';
 import { CustomerServiceImpl } from './services/customer-service-impl.service';
 import { CustomerService } from './interfaces/customer.service';
+import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { CustomerListComponent } from './components/customer-list/customer-list.component';
 
 @NgModule({
-  declarations: [CustomerComponent],
+  declarations: [CustomerFormComponent, CustomerListComponent],
   providers: [
     {
       provide: CustomerService,
