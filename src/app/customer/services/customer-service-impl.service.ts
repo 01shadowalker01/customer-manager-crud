@@ -41,7 +41,8 @@ export class CustomerServiceImpl implements CustomerService {
         data: null,
       };
 
-    let customers: Customer[] = this.fetchAll().data;
+    let customers: Customer[] = this.customers;
+    if (!this.outdated) customers = this.fetchAll().data;
 
     const customer = customers.find((customer) => customer.id == id);
     if (!customer) return { statusCode: ResponseCode.NOT_FOUND, data: null };

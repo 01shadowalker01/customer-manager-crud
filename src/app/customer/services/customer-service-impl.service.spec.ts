@@ -54,7 +54,7 @@ describe('#CustomerService', () => {
       expect(customerList.length).toEqual(0);
     });
 
-    it(`given there are two customers in database, fetches the all`, () => {
+    it(`given there are two customers in database, fetches them all`, () => {
       const customer = createCustomer();
       const customer2 = createCustomer({
         firstName: 'Michael',

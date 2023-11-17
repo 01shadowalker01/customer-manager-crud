@@ -1,3 +1,4 @@
+import { md5 } from 'js-md5';
 import { Email } from './email.model';
 import { PhoneNumber } from './phone-number.model';
 
@@ -57,11 +58,11 @@ export class Customer {
   }
 
   toJSON() {
-    const customer: iCustomer & { id: string } = {
+    const customer: iCustomer | { id: string; dateOfBirth: string } = {
       id: this.id,
       firstName: this.firstName,
       lastName: this.lastName,
-      dateOfBirth: this.dateOfBirth,
+      dateOfBirth: this.dateOfBirth.toDateString(),
       phoneNumber: this.phoneNumber.toString(),
       email: this.email.toString(),
       bankAccountNumber: this.bankAccountNumber,
@@ -70,7 +71,13 @@ export class Customer {
   }
 
   private generateId(customer: iCustomer): string {
-    return customer.firstName + customer.lastName;
+    const dateOfBirth =
+      typeof customer.dateOfBirth == 'string'
+        ? customer.dateOfBirth
+        : customer.dateOfBirth.toDateString();
+    const hashKey = customer.firstName + customer.lastName + dateOfBirth;
+
+    return md5(hashKey);
   }
 }
 
