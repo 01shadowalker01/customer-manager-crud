@@ -1,5 +1,6 @@
 import { ValueObject } from '../interfaces/value-object';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { PhoneNumberUtil, PhoneNumberType } from 'google-libphonenumber';
 
 export class PhoneNumber implements ValueObject<string> {
   private _value!: string;
@@ -16,6 +17,26 @@ export class PhoneNumber implements ValueObject<string> {
   }
 
   validate(value: string): boolean {
+    if (!value) {
+      return false;
+    }
+
+    const phoneNumberUtil = PhoneNumberUtil.getInstance();
+    let phoneNumber;
+    try {
+      phoneNumber = phoneNumberUtil.parseAndKeepRawInput(value, 'US');
+    } catch (e) {
+      return false;
+    }
+
+    if (!phoneNumberUtil.isValidNumber(phoneNumber)) {
+      return false;
+    }
+
+    if (phoneNumberUtil.getNumberType(phoneNumber) !== PhoneNumberType.MOBILE) {
+      return false;
+    }
+
     return true;
   }
 

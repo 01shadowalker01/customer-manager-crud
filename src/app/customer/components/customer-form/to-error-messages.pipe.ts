@@ -17,4 +17,5 @@ const errorMessages: { [key: string]: string } = {
   required: 'This field is required.',
   minlength: 'The input is too short.',
   invalidEmail: 'The email is invalid.',
+  invalidPhoneNumber: 'The phone number is invalid.',
 };

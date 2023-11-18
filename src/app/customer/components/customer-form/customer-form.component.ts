@@ -12,6 +12,7 @@ import { CustomerService } from '../../interfaces/customer.service';
 import { Response } from 'src/app/models/response.model';
 import { ResponseCode } from 'src/app/models/response-code.enum';
 import { EmailValidator } from '../../models/email.model';
+import { PhoneNumberValidator } from '../../models/phone-number.model';
 
 @Component({
   selector: 'app-customer-form',
@@ -45,7 +46,7 @@ export class CustomerFormComponent implements OnInit {
       bankAccountNumber: [null, Validators.required],
       dateOfBirth: [null, Validators.required],
       email: [null, [Validators.required, EmailValidator()]],
-      phoneNumber: [null, Validators.required],
+      phoneNumber: [null, [Validators.required, PhoneNumberValidator()]],
     });
   }
 
