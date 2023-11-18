@@ -45,6 +45,10 @@ export class Customer {
 
   private setProperties(customer: iCustomer) {
     this._id = this.generateId(customer);
+    this.update(customer);
+  }
+
+  update(customer: iCustomer) {
     this._firstName = customer.firstName;
     this._lastName = customer.lastName;
     this._dateOfBirth = customer.dateOfBirth;

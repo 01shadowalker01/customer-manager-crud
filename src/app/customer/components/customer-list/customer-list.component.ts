@@ -22,7 +22,7 @@ export class CustomerListComponent implements OnInit {
     'action',
   ];
 
-  constructor(public customerService: CustomerService) {}
+  constructor(private customerService: CustomerService) {}
 
   ngOnInit(): void {
     this.loadData();

@@ -1,0 +1,13 @@
+button.back-btn {
+  margin-bottom: 16px;
+}
+
+.form-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5% 10%;
+}
+
+button[type="submit"] {
+  justify-self: start;
+}

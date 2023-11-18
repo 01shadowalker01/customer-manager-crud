@@ -10,11 +10,19 @@ import {
 import { AppComponent } from './app.component';
 import { CustomerModule } from './customer/customer.module';
 import { routes } from './app.routing';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, CustomerModule, RouterModule],
+  imports: [
+    BrowserModule,
+    CustomerModule,
+    RouterModule,
+    BrowserAnimationsModule,
+  ],
   providers: [
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),

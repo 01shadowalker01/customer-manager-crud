@@ -1,3 +1,72 @@
-<button mat-raised-button color="primary" routerLink="/">
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<button mat-raised-button class="back-btn" color="primary" routerLink="/">
   <mat-icon>arrow_back_ios</mat-icon>Back to Customer List
 </button>
+
+<form [formGroup]="form" class="form-wrapper" (ngSubmit)="onSubmit(form.value)">
+  <mat-form-field>
+    <mat-label>First Name</mat-label>
+    <input matInput formControlName="firstName" />
+    @for (err of this.form.get('firstName')?.errors | toErrorMessages; track
+    $index) {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Last Name</mat-label>
+    <input matInput formControlName="lastName" />
+    @for (err of this.form.get('lastName')?.errors | toErrorMessages; track
+    $index) {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Date Of Birth</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    @for (err of this.form.get('dateOfBirth')?.errors | toErrorMessages; track
+    $index) {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Phone Number</mat-label>
+    <input matInput formControlName="phoneNumber" />
+    @for (err of this.form.get('phoneNumber')?.errors | toErrorMessages; track
+    $index) {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+    @for (err of this.form.get('email')?.errors | toErrorMessages; track $index)
+    {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Bank Account Number</mat-label>
+    <input matInput formControlName="bankAccountNumber" />
+    @for (err of this.form.get('bankAccountNumber')?.errors | toErrorMessages;
+    track $index) {
+    <mat-error>{{ err }}</mat-error>
+    }
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="accent"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    Submit
+  </button>
+</form>
