@@ -17,10 +17,14 @@ export class CustomerServiceImpl implements CustomerService {
   }
 
   insert(customer: Customer): Response<string> {
-    if (this.isCustomerDuplicate(customer.id))
+    if (
+      this.isCustomerDuplicate(customer.id) ||
+      this.isEmailDuplicate(customer.email.value)
+    )
       return {
-        statusCode: ResponseCode.BAD_REQUEST,
         data: '',
+        statusCode: ResponseCode.BAD_REQUEST,
+        errorMessage: 'Customer with this information already exists.',
       };
 
     this.customers.push(customer);
@@ -34,6 +38,15 @@ export class CustomerServiceImpl implements CustomerService {
   private isCustomerDuplicate(id: string): boolean {
     const resp = this.fetchById(id);
     return resp.statusCode === ResponseCode.SUCCESS ? true : false;
+  }
+
+  private isEmailDuplicate(email: string): boolean {
+    let customers: Customer[] = this.customers;
+    if (!this.outdated) customers = this.fetchAll().data;
+    const customer = customers.find(
+      (customer) => customer.email.value == email
+    );
+    return !!customer;
   }
 
   fetchById(id: string): Response<Customer | null> {

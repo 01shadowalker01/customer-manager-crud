@@ -59,6 +59,7 @@ describe('#CustomerService', () => {
       const customer2 = createCustomer({
         firstName: 'Michael',
         lastName: 'Scott',
+        email: 'm@gmail.com',
       });
       service.insert(customer);
       service.insert(customer2);

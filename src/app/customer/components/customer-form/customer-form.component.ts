@@ -99,9 +99,11 @@ export class CustomerFormComponent implements OnInit {
     if (resp.statusCode === ResponseCode.SUCCESS) {
       message = this.isEditMode() ? 'Customer updated.' : 'Customer created.';
     } else {
-      message = `There was an issue ${
-        this.isEditMode() ? 'creating' : 'updating'
-      } the customer`;
+      message =
+        resp.errorMessage ||
+        `There was an issue ${
+          this.isEditMode() ? 'updating' : 'creating'
+        } the customer`;
     }
     this.snackBar.open(message, 'x', {
       duration: 3000,
