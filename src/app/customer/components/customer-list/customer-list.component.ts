@@ -12,6 +12,7 @@ export class CustomerListComponent implements OnInit {
   showDeleteMessageOnRow!: string | null;
   loading = false;
   customerList: Customer[] = [];
+  filteredCustomerList: Customer[] = [];
   displayedColumns: string[] = [
     'firstName',
     'lastName',
@@ -30,6 +31,17 @@ export class CustomerListComponent implements OnInit {
 
   private loadData() {
     this.customerList = this.customerService.fetchAll().data;
+    this.filteredCustomerList = this.customerList;
+  }
+
+  onSearch(input: string) {
+    const lower = input.toLowerCase();
+    this.filteredCustomerList = this.customerList.filter((customer) => {
+      return (
+        customer.firstName.toLowerCase().includes(lower) ||
+        customer.lastName.toLowerCase().includes(lower)
+      );
+    });
   }
 
   onDelete(id: string) {
