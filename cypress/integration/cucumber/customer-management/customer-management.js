@@ -31,10 +31,21 @@ Then("I should see the following customer details", (dataTable) => {
   cy.get('td[data-e2e="bankAccountNumber"]').contains(data[0][5]);
 });
 
+When('I visit the "New Customer" page', () => {
+  cy.visit("/new");
+});
+
+Then(/I should see "(.*?)"/, (message) => {
+  cy.get(".mat-mdc-snack-bar-label").contains(message);
+});
+
+When('I go back to "Customer List" page', () => {
+  cy.get('button[data-e2e="back-btn"]').click();
+});
+
 When(
   /I update the customer "(.*?)" with the following details/,
   (name, dataTable) => {
-    cy.contains(name).click();
     cy.get('button[data-e2e="edit-btn"]').click();
     let data = dataTable.rawTable.slice(1);
     cy.get('input[data-e2e="firstName"]').clear().type(data[0][0]);
