@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../interfaces/customer.service';
 import { Customer } from '../../models/customer.model';
 import { ResponseCode } from 'src/app/models/response-code.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-customer-list',
@@ -23,7 +24,10 @@ export class CustomerListComponent implements OnInit {
     'action',
   ];
 
-  constructor(private customerService: CustomerService) {}
+  constructor(
+    private customerService: CustomerService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -50,6 +54,9 @@ export class CustomerListComponent implements OnInit {
     if (resp.statusCode == ResponseCode.SUCCESS) {
       setTimeout(() => {
         this.loading = false;
+        this.snackBar.open('Customer deleted.', 'x', {
+          duration: 3000,
+        });
         this.loadData();
       }, 300);
     }

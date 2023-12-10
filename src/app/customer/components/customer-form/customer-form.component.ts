@@ -13,6 +13,7 @@ import { Response } from 'src/app/models/response.model';
 import { ResponseCode } from 'src/app/models/response-code.enum';
 import { EmailValidator } from '../../models/email.model';
 import { PhoneNumberValidator } from '../../models/phone-number.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-form',
@@ -27,6 +28,7 @@ export class CustomerFormComponent implements OnInit {
   form!: FormGroup;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
     private snackBar: MatSnackBar
@@ -84,6 +86,9 @@ export class CustomerFormComponent implements OnInit {
           resp = this.customerService.insert(customer);
         }
         this.showMessage(resp);
+        if (resp && this.isSuccessFull(resp.statusCode)) {
+          this.router.navigate(['/']);
+        }
       }, 300);
     }
   }
@@ -92,11 +97,15 @@ export class CustomerFormComponent implements OnInit {
     return !!this.id;
   }
 
+  private isSuccessFull(status: ResponseCode): boolean {
+    return status === ResponseCode.SUCCESS;
+  }
+
   private showMessage(resp: Response<string> | null) {
     if (!resp) return;
 
     let message: string = '';
-    if (resp.statusCode === ResponseCode.SUCCESS) {
+    if (this.isSuccessFull(resp.statusCode)) {
       message = this.isEditMode() ? 'Customer updated.' : 'Customer created.';
     } else {
       message =
