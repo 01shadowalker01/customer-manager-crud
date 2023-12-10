@@ -10,34 +10,42 @@
 <table mat-table [dataSource]="filteredCustomerList" class="mat-elevation-z8">
   <ng-container matColumnDef="firstName">
     <th mat-header-cell *matHeaderCellDef>First Name</th>
-    <td mat-cell *matCellDef="let customer">{{ customer.firstName }}</td>
+    <td data-e2e="firstName" mat-cell *matCellDef="let customer">
+      {{ customer.firstName }}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="lastName">
     <th mat-header-cell *matHeaderCellDef>Last Name</th>
-    <td mat-cell *matCellDef="let customer">{{ customer.lastName }}</td>
+    <td data-e2e="lastName" mat-cell *matCellDef="let customer">
+      {{ customer.lastName }}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="dateOfBirth">
     <th mat-header-cell *matHeaderCellDef>Date Of Birth</th>
-    <td mat-cell *matCellDef="let customer">
+    <td data-e2e="dateOfBirth" mat-cell *matCellDef="let customer">
       {{ customer.dateOfBirth | date }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="phoneNumber">
     <th mat-header-cell *matHeaderCellDef>Phone Number</th>
-    <td mat-cell *matCellDef="let customer">{{ customer.phoneNumber }}</td>
+    <td data-e2e="phoneNumber" mat-cell *matCellDef="let customer">
+      {{ customer.phoneNumber }}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="email">
     <th mat-header-cell *matHeaderCellDef>Email</th>
-    <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+    <td data-e2e="email" mat-cell *matCellDef="let customer">
+      {{ customer.email }}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="bankAccountNumber">
     <th mat-header-cell *matHeaderCellDef>Bank Account Number</th>
-    <td mat-cell *matCellDef="let customer">
+    <td data-e2e="bankAccountNumber" mat-cell *matCellDef="let customer">
       {{ customer.bankAccountNumber }}
     </td>
   </ng-container>
@@ -49,6 +57,7 @@
       <button
         mat-icon-button
         color="primary"
+        data-e2e="edit-btn"
         [routerLink]="['edit', customer.id]"
       >
         <mat-icon>edit</mat-icon>
@@ -56,6 +65,7 @@
       <button
         mat-icon-button
         color="warn"
+        data-e2e="delete-btn"
         (click)="showDeleteMessageOnRow = customer.id"
       >
         <mat-icon>delete</mat-icon>
@@ -63,7 +73,12 @@
       } @else {
       <div class="delete-message-wrapper">
         <p>Are you sure you want to delete this customer?</p>
-        <button mat-icon-button color="primary" (click)="onDelete(customer.id)">
+        <button
+          mat-icon-button
+          color="primary"
+          data-e2e="accept-delete-btn"
+          (click)="onDelete(customer.id)"
+        >
           <mat-icon>check</mat-icon>
         </button>
         <button
