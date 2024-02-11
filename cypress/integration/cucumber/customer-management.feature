@@ -25,5 +25,3 @@ Feature: Customer Management
              When I delete the customer "Jane Doe"
              Then I should see "Customer deleted"
               And I should not see customer with "jane.doe@example.com" email
-                  | Firstname | Lastname | DateOfBirth | PhoneNumber   | Email                | BankAccountNumber |
-                  | Jane      | Doe      | Jan 1, 1990 | +989198765432 | jane.doe@example.com | 87654321          |
